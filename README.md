@@ -115,6 +115,6 @@ The training patterns utilized during fine-tuning may not have been comprehensiv
 There's an opportunity for further development in the data filtering processes. Enhancing these mechanisms can lead to more refined and relevant datasets, ultimately improving model accuracy.\
 **4. Prompt System Detailing**\
 The current prompt system could be improved by incorporating more detailed and specific guidelines. By reducing ambiguity and increasing the granularity of the prompts, we can enhance the model's understanding and response accuracy.\
-**Exploring Variations of other AI Models:**\
+**5. Exploring Variations of other AI Models:**\
  Experimenting with different AI models could provide valuable insights and potentially yield better performance outcomes. Trying out various architectures and techniques may reveal new opportunities for improvement and innovation.\
 By addressing these aspects, we can work towards a more robust and efficient AI solution, ultimately improving user experience and satisfaction.

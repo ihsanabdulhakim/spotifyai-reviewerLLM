@@ -93,6 +93,7 @@ To perform the chatbot task, we need to run the scripts in terminal:
 ```
 streamlit run app.py
 ```
+After that, the localhost will be launch featuring the user interface of the simple chatbot.
 
 ## Quality Score
 As an additional, I calculate quality score using `quality_score` for calculates between a user message to an assistant message represents the semantic similarity between the two messages, providing a quantitative measure of how closely they relate. The score calculation formula are based on Cosine Similarity.

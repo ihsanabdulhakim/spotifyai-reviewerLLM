@@ -17,7 +17,21 @@ The model I am using is the frontier close-source model GPT-4o Mini, developed b
 Although the model I am using is designed for efficiency, I require GPU performance to accelerate program execution. Therefore, I chose the T4 GPU in Google Colab Pro for the metadata creation and fine-tuning process.
 
 ## Data Cleaning
-This explanation are based on `training.ipynb`. Before begin the training, I first performed data cleaning. I used the `FILLNA` function to prevent the delete of any important database. After that, considering the constraints of GPU resources, I randomly selected 1,000 samples from the entire DataFrame to use for fine-tuning. 
+This explanation are based on `training.ipynb`. To support in running the program, since I ran in notebooks (Google Colab), we need to install required libraries.
+```
+!pip install openai safetensors accelerate
+```
+
+We also need to import the modules and connect to openai API
+```
+import openai
+import os
+import json
+import re
+import pandas as pd
+import numpy as np
+```
+Before begin the training, I first performed data cleaning. I used the `FILLNA` function to prevent the delete of any important database. After that, considering the constraints of GPU resources, I randomly selected 1,000 samples from the entire DataFrame to use for fine-tuning. 
 Next, I prepare the **training** and **valid** dataset by spliting the whole dataframe sampled into ratio 70%:30%. So the training has to be in require format that already being told in [Platform OpenAI Docs](https://platform.openai.com/docs/guides/fine-tuning/preparing-your-dataset). The training format must be in meta data `jsonl` in form like this:
 
 `{"messages": [{"role": "system", "content": "system prompt as the assistant guidance"}, {"role": "user", "content": "Any database, known-information, and question inpuy"}, {"role": "assistant", "content": "Expected AI answer"}]}`
@@ -30,6 +44,8 @@ Now, I prepared the training and validation JSON files for fine-tuning. I used t
 ```
 with open(train_file_path, "rb") as f:
    train_file = openai.files.create(file=f, purpose="fine-tune")
+with open(valid_file_path, "rb") as f:
+   valid_file = openai.files.create(file=f, purpose="fine-tune")
 ```
 
 Then, we create the fine-tuning key aspect by choosing hyperparameter using this snipped code:
@@ -46,4 +62,4 @@ openai.fine_tuning.jobs.create(
 )
 ```
 
-The integrations are optional for displaying visualization during training process in [https://wandb.ai/]
+The integrations are optional for displaying visualization during training process in [wandb.ai](https://wandb.ai/). You may setting your own parameter by changing the epochs (how many times the dataset will be being read) and batch_size (number of samples that will be propagated through the network at one time).

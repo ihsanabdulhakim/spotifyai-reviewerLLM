@@ -34,9 +34,9 @@ import numpy as np
 Before begin the training, I first performed data cleaning. I used the `FILLNA` function to prevent the delete of any important database. After that, considering the constraints of GPU resources, I randomly selected 1,000 samples from the entire DataFrame to use for fine-tuning. 
 Next, I prepare the **training** and **valid** dataset by spliting the whole dataframe sampled into ratio 70%:30%. So the training has to be in require format that already being told in [Platform OpenAI Docs](https://platform.openai.com/docs/guides/fine-tuning/preparing-your-dataset). The training format must be in meta data `jsonl` in form like this:
 
-`{"messages": [{"role": "system", "content": "system prompt as the assistant guidance"}, {"role": "user", "content": "Any database, known-information, and question inpuy"}, {"role": "assistant", "content": "Expected AI answer"}]}`
+`{"messages": [{"role": "system", "content": "system prompt as the assistant guidance"}, {"role": "user", "content": "Any database, known-information, and question input"}, {"role": "assistant", "content": "Expected AI answer"}]}`
 
-I combined the datasets of every row to be in the **"user role"** to make language learning for the model and the result is being save to `./dataset/train-json-file-fix.jsonl` and `./dataset/valid-json-file-fix.jsonl`.
+I combined the datasets of every row to be in the **"user role"** and create few question to make language learning for the model and the result is being save to `./dataset/train-json-file-fix.jsonl` and `./dataset/valid-json-file-fix.jsonl`.
 
 ## Training
 Now, I prepared the training and validation JSON files for fine-tuning. I used the model **gpt-4o-mini-2024-07-18** for this process by uploading using this scripts:
@@ -56,10 +56,31 @@ openai.fine_tuning.jobs.create(
     validation_file=valid_file.id,
     model=modelFINETUNING,
     seed=42,
-    hyperparameters={"n_epochs": 2, "batch_size": 8}, # using gpu (cuda)
+    hyperparameters={"n_epochs": 5, "batch_size": 8}, # using gpu (cuda)
     integrations = {"type": "wandb", "wandb": {"project": "gpt-pricer"}},
     suffix="spotify-chatbot-reviewer"
 )
 ```
 
 The integrations are optional for displaying visualization during training process in [wandb.ai](https://wandb.ai/). You may setting your own parameter by changing the epochs (how many times the dataset will be being read) and batch_size (number of samples that will be propagated through the network at one time).
+
+
+<p align="center">
+  <strong>Plot Mean Token Accuracy (Left: Train, Right: Valid)</strong>
+</p>
+  <img src="https://github.com/user-attachments/assets/28154194-a101-443f-a56b-1462b3542a8f" alt="W B Chart 31_10_2024, 19 17 47" width="40%" style="display: inline-block; margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/58cb1210-21df-46b5-880d-9bf5a1cd9af9" alt="W B Chart 31_10_2024, 19 18 33" width="40%" style="display: inline-block;"/>
+</p>
+
+<p align="center">
+  <strong>Plot Loss (Left: Train, Right: Valid)</strong>
+</p>
+  <img src="https://github.com/user-attachments/assets/3761bcc7-056d-4cef-8944-36c4e93d94aa" alt="W B Chart 31_10_2024, 19 17 47" width="40%" style="display: inline-block; margin-right: 10px;"/>
+  <img src="https://github.com/user-attachments/assets/292b3278-b0b3-442e-97a7-ca5cff9872d5" alt="W B Chart 31_10_2024, 19 18 33" width="40%" style="display: inline-block;"/>
+</p>
+
+Overall, the 'train' dataset shows a significant accuracy value of approximately 1, but it is not quite perfect. Meanwhile, the 'valid' dataset demonstrates relatively sharp performance despite having limited data. From the loss values alone, it is evident that the 'valid' dataset experiences a substantial loss, exceeding 0.2 in a few steps (horizontal bars). Since, the question is still variety, it can be one of the reason that the model considered as underfit, so we need to train more data with pattern question to gain better results. The fine-tuned model named **"ft:gpt-4o-mini-2024-07-18:personal:spotify-chatbot-reviewer-updated:AO57Uu5E"**.
+
+## Inference
+
+

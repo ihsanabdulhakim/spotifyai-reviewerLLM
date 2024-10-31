@@ -17,7 +17,7 @@ The model I am using is the frontier close-source model GPT-4o Mini, developed b
 Although the model I am using is designed for efficiency, I require GPU performance to accelerate program execution. Therefore, I chose the T4 GPU in Google Colab Pro for the metadata creation and fine-tuning process.
 
 ## Data Cleaning
-This explanation are based on `training.ipynb`. To support in running the program, since I ran in notebooks (Google Colab), we need to install required libraries.
+This explanation are based on **`training.ipynb`**. To support in running the program, since I ran in notebooks (Google Colab), we need to install required libraries.
 ```
 !pip install openai safetensors accelerate
 ```
@@ -37,7 +37,7 @@ Next, I prepare the **training** and **valid** dataset by spliting the whole dat
 
 `{"messages": [{"role": "system", "content": "system prompt as the assistant guidance"}, {"role": "user", "content": "Any database, known-information, and question input"}, {"role": "assistant", "content": "Expected AI answer"}]}`
 
-I combined the datasets of every row to be in the **"user role"** and create few question to make language learning for the model and the result is being save to `./dataset/train-json-file-fix.jsonl` and `./dataset/valid-json-file-fix.jsonl`.
+I combined the datasets of every row to be in the `"user role"` and create few question to make language learning for the model and the result is being save to **`./dataset/train-json-file-fix.jsonl`** and **`./dataset/valid-json-file-fix.jsonl`**.
 
 ## Training
 Now, I prepared the training and validation JSON files for fine-tuning. I used the model **gpt-4o-mini-2024-07-18** for this process by uploading using this scripts:
@@ -87,7 +87,7 @@ First, we need to reassure all of the required dependencies already available. T
 ```
 pip install -r requirements.txt
 ```
-So, I combined the manual RAG using `handle_tool_calls` and other functions that being construct in **`backend.py`**. The metadata will be based on the dictionary format `spotifyreviewscombined.jsonl` which is generated in **`jsonforrag.py`**. TThis will serve as the final step to support the development of **app.py** as the local application for the inference of the Spotify AI chatbot. After that, I implement the *initial_greeting* everytime the chat inference appears first time or being clear after having chat interactions.
+So, I combined the manual RAG using `handle_tool_calls` and other functions that being construct in **`backend.py`**. The metadata will be based on the dictionary format `spotifyreviewscombined.jsonl` which is generated in **`jsonforrag.py`**. The meta data for tools function is constructed within **`meta.py`**. This will serve as the final step to support the development of **`app.py`** as the local application for the inference of the Spotify AI chatbot. After that, I implement the *initial_greeting* everytime the chat inference appears first time or being clear after having chat interactions.
 
 To perform the chatbot task, we need to run the scripts in terminal:
 ```

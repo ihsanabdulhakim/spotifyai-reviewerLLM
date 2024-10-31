@@ -1,0 +1,7 @@
+openai
+pandas
+pillow
+huggingface_hub
+transformers
+torch
+streamlit
